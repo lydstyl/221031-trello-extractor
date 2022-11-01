@@ -1,3 +1,5 @@
+const fs = require("fs")
+
 // const GenerateSchema = require("generate-schema")
 const data = require("./data.json") // exported from trello
 
@@ -6,20 +8,20 @@ const data = require("./data.json") // exported from trello
 // console.log(`gb🚀 ~ schema`, schema)
 
 // Log selected cards' name, url and due date
-data.cards
+const cards = data.cards
     .filter(card => !card.closed)
-
     .map(card => {
         const { name, shortUrl, due } = card
-
         return { name, link: shortUrl, fixedDate: due }
     })
 
-    .forEach(card => {
-        console.log(`gb🚀 ~ card`, card)
-    })
+cards.forEach(card => {
+    console.log(`gb🚀 ~ card`, card)
+})
 
-console.log(
-    "Number of cards : ",
-    data.cards.filter(card => !card.closed).length
-)
+console.log("Number of cards : ", cards.length)
+
+fs.writeFile("generated.json", JSON.stringify(cards, null, 4), function (err) {
+    if (err) throw err
+    console.log("Saved!")
+})
